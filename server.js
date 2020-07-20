@@ -18,8 +18,8 @@ app.listen(PORT, (req, res) => {
   console.log("port is running");
 });
 
-app.get((req,res) => {
-    res.send({message : "we are on server.js"})
-})
+app.get("/", (req, res) => {
+  res.send({ message: "we are on server.js" });
+});
 
 app.use("/", require("./routes"));
