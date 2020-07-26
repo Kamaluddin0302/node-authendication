@@ -12,7 +12,7 @@ db.once("open", function () {
 app.use(express.json());
 app.use(cors());
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 5555;
 
 app.listen(PORT, (req, res) => {
   console.log("port is running");
@@ -22,4 +22,4 @@ app.get("/", (req, res) => {
   res.send({ message: "we are on server.js" });
 });
 
-app.use("/", require("./routes"));
+app.use("/", require("./routes/index"));

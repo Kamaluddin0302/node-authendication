@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 
-router.use('/users', require('./Auth/Auth'));
+router.use('/users', require('../Controler/Auth/Auth'));
 
 router.get((req,res)=>{
 res.send({

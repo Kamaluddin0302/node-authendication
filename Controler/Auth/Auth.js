@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Users = require("../../models/Register");
+const Users = require("../../models/Authendiction");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
@@ -11,7 +11,7 @@ router.get("/getAll", async (req, res) => {
     const users = await Users.find({});
     res.send(users);
   } catch (err) {
-    res.status(400).send({ message: err.message });
+    res.send({ message: err.message });
   }
 });
 
@@ -23,7 +23,7 @@ router.post("/AddPost", async (req, res) => {
     await user.save();
     res.send({ message: "Post  successfully inserted!" });
   } catch (e) {
-    res.send(500, { message: e.message });
+    res.send({ message: e.message });
   }
 });
 
@@ -33,7 +33,7 @@ router.post("/register", async (req, res) => {
   const user = req.body;
   const emailExist = await Users.findOne({ email: user.email });
   if (emailExist) {
-    return res.status(400).send({ message: "Email Already exists" });
+    return res.send({ message: "Email Already exists" });
   }
 
   try {
@@ -43,7 +43,7 @@ router.post("/register", async (req, res) => {
     newUser.save();
     res.send({ message: "User registered successfully!" });
   } catch (err) {
-    res.send(500, { message: err.message });
+    res.send({ message: err.message });
   }
 });
 
@@ -53,7 +53,7 @@ router.post("/login", async (req, res) => {
   console.log("body", req.body);
   const user = await Users.find({ email: req.body.email });
   if (!user.length) {
-    res.send(500, { message: "User not found!" });
+    res.send({ message: "User not found!" });
     return;
   }
   const passwordMatched = bcrypt.compareSync(
@@ -62,7 +62,7 @@ router.post("/login", async (req, res) => {
   );
 
   if (!passwordMatched) {
-    res.send(500, { message: "Incorrect Email/Password!" });
+    res.send({ message: "Incorrect Email/Password!" });
     return;
   }
 
@@ -70,7 +70,6 @@ router.post("/login", async (req, res) => {
   const token = await jwt.sign(
     {
       user: user[0],
-      exp: Math.floor(Date.now() / 1000) + 60,
     },
     "yourSecretKey"
   );
@@ -79,7 +78,6 @@ router.post("/login", async (req, res) => {
     password: user[0].password,
     name: user[0].name,
     age: user[0].age,
-    name: "kamal",
     userToken: token,
   });
 });
